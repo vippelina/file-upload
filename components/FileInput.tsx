@@ -15,9 +15,9 @@ const FileInput: React.FC<fileInputProps> = ({}) => {
     if (!selectedFiles?.length) return;
 
     // prepare payload
-    formData.append("file", selectedFiles[0]);
+    formData.append("upload", selectedFiles[0]);
 
-    const response = await fetch("/api/hello", {
+    const response = await fetch("/api/upload", {
       method: "POST",
       body: formData,
     });
