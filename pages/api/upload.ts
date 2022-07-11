@@ -1,5 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import formidable, { File } from "formidable";
+import fs from "fs";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const dbName = process.env.DB_NAME;
@@ -13,13 +14,13 @@ enum fileTypeT {
 }
 
 type parsedFormDataT = {
-  customFilename?: string;
+  customName?: string;
   incomingFile: File;
   creator: string;
   description: string;
   filetype: string;
   // return {
-  //   customFilename: "ny nytt namn", //undefined om
+  //   customName: "ny nytt namn", //undefined om
   //   incomingFile: "filen som man får",
   //   publicUrl: undefined,
   //   creator: "Vibeke Tengroth",
@@ -60,17 +61,22 @@ const parseForm = (req: NextApiRequest): Promise<parsedFormDataT> => {
   const form = new formidable.IncomingForm();
   return new Promise((resolve, reject) => {
     form.parse(req, (err, fields, files) => {
+      // validation
       if (err) reject(err);
       if (!files.upload) reject(new Error("No file was sent"));
+      if (!fields.creator) reject(new Error("Field: creator is missing"));
+      if (!fields.description)
+        reject(new Error("Field: description is missing"));
+
+      // bake return data
       const uploadedFile = files.upload as File;
-      const resolveValue = { ...fields };
-      if (!fields.creator) throw new Error("Field: creator is missing");
-      if (!fields.description) throw new Error("Field: description is missing");
+
       return resolve({
-        incomingFile: files.upload as File,
+        incomingFile: uploadedFile,
         creator: fields.creator as string,
         description: fields.description as string,
-        filetype: uploadedFile.filepath, // todo make enum
+        filetype: uploadedFile.filepath,
+        customName: fields.customName as string,
       });
     });
   });
@@ -89,7 +95,7 @@ const parseForm = (req: NextApiRequest): Promise<parsedFormDataT> => {
   // kolla om det inte finns någon fil, i så fall returnera fel
   // parsea filen sätt custom filename om finns
   // return {
-  //   customFilename: "ny nytt namn", //undefined om
+  //   customName: "ny nytt namn", //undefined om
   //   incomingFile: "filen som man får",
   //   publicUrl: undefined,
   //   creator: "Vibeke Tengroth",
@@ -100,20 +106,18 @@ const parseForm = (req: NextApiRequest): Promise<parsedFormDataT> => {
 
 const moveFileToPublicFolder = (
   file: File,
-  customFilename?: string
-): string => {
-  return "string to public url";
-  // kod för att flytta filen
-  // const oldPath = incomingFile.filepath;
-  // const newPath = `./public/uploads/${incomingFile.originalFilename}`;
-  // console.log("vippe old path", oldPath);
-  // console.log("vippe got newPath", newPath);
-  // fs.rename(oldPath, newPath, function (err) {
-  //   console.log("vippe got err", err);
-  //   if (err) throw err;
-  //   console.log("bubba!");
-  //   console.log("newpath", newPath);
-  // });
+  customName?: string
+): Promise<string> => {
+  return new Promise((resolve) => {
+    const oldPath = file.filepath;
+    const newPath = `./public/uploads/${customName || file.originalFilename}`;
+
+    // using rename will automatically move file if path is different
+    fs.rename(oldPath, newPath, function (err) {
+      if (err) throw err;
+      resolve(newPath);
+    });
+  });
 };
 
 export default async function handler(
@@ -135,10 +139,11 @@ export default async function handler(
       const parsedForm = await parseForm(req);
 
       // flytta filen till rätt ställe
-      const publicPath = moveFileToPublicFolder(
+      const publicPath = await moveFileToPublicFolder(
         parsedForm.incomingFile,
-        parsedForm.customFilename
+        parsedForm.customName
       );
+
       // // spara filen och returnera en ny lista med alla filer
       // const upload = saveFile()
     } catch (e) {
