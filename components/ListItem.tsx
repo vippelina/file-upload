@@ -1,5 +1,6 @@
 import React from "react";
 import { Tr, Td, Text } from "@chakra-ui/react";
+import MimetypeIcon from "./MimetypeIcon";
 
 export interface ListItemProps {
   creator: string;
@@ -7,10 +8,15 @@ export interface ListItemProps {
   filename: string;
   description: string;
   path: string;
+  _id: string;
+  mimetype: string;
 }
 
-const getPublicPath = (path: string) => {
-  return "http://svt.se"; // todo fix
+const getPublicPath = (path: string): string => {
+  const base = "http://localhost:3000"; // todo make dynamic
+  const strippedPath = path.replace("./public", "");
+  console.log("vippe strippedpath", strippedPath);
+  return `${base}${strippedPath}`;
 };
 
 const ListItem: React.FC<ListItemProps> = ({
@@ -19,17 +25,28 @@ const ListItem: React.FC<ListItemProps> = ({
   filename,
   path,
   description,
+  mimetype,
+  _id,
 }) => {
   const publicPath = getPublicPath(path);
-  console.log("vippe in i listitem render");
+  const formattedDate = new Date(created).toLocaleDateString("sv-SE", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
   return (
     <Tr>
       <Td>
         <a href={publicPath}>{filename}</a>
       </Td>
       <Td>{creator}</Td>
-      <Td>{description}</Td>
-      <Td>{created.toDateString()}</Td>
+      <Td maxW={200}>{description}</Td>
+      <Td>{formattedDate}</Td>
+      <Td>
+        <MimetypeIcon mimetype={mimetype} />
+      </Td>
     </Tr>
   );
 };

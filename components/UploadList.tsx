@@ -14,46 +14,16 @@ import {
   Tfoot,
 } from "@chakra-ui/react";
 
-const today = new Date();
-
-const mockData = [
-  {
-    creator: "vibeke tengeroth",
-    created: today,
-    filename: "vippelajlaj.mp3",
-    path: "./public/uploads/vippelur.mp3",
-    description: "a very long description or a short one depending on whartt h",
-  },
-  {
-    creator: "anders tengeroth",
-    created: today,
-    filename: "anderslajlaj.mp3",
-    path: "./public/uploads/vippelur.mp3",
-    description: "a very long description or a short one depending on whartt h",
-  },
-  {
-    creator: "vibeke tengeroth",
-    created: today,
-    filename: "vippelajlaj.mp3",
-    path: "./public/uploads/vippelur.mp3",
-    description: "a very long description or a short one depending on whartt h",
-  },
-];
-
-// export interface ListItemProps {
-//   creator: string;
-//   created: Date;
-//   filename: string;
-//   description: string;
-//   relativePath: string;
-// }
-
+import { ListItemProps } from "./ListItem";
 const UploadList: React.FC<UploadListProps> = ({}) => {
-  const { uploads, isLoading, isError } = useUploads();
+  const { uploads, isLoading } = useUploads();
+  if (uploads && uploads.length) {
+    console.log("vippe passing key to listItem", uploads[0]._id);
+  }
 
   return (
     <>
-      {mockData.length && (
+      {uploads && uploads.length && (
         <TableContainer>
           <Table variant="simple">
             <TableCaption>File uploads</TableCaption>
@@ -63,15 +33,13 @@ const UploadList: React.FC<UploadListProps> = ({}) => {
                 <Th>Uploaded by</Th>
                 <Th>Description</Th>
                 <Th>Uploaded at</Th>
+                <Th>Filetype</Th>
               </Tr>
             </Thead>
             <Tbody>
-              <>
-                {mockData.map((d) => (
-                  <ListItem {...d} />
-                ))}
-              </>
-              <ListItem {...mockData[0]} />
+              {uploads.map((upload) => (
+                <ListItem {...upload} key={upload._id} />
+              ))}
             </Tbody>
           </Table>
         </TableContainer>

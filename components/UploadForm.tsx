@@ -8,6 +8,7 @@ import {
 import { Field, Form, Formik } from "formik";
 import React from "react";
 import FileInput from "./FileInput";
+import { useSWRConfig } from "swr";
 interface fileInputProps {}
 
 interface UploadFormValues {
@@ -24,6 +25,7 @@ const UploadForm: React.FC<fileInputProps> = ({}) => {
     upload: undefined,
     customName: "",
   };
+  const { mutate } = useSWRConfig();
 
   return (
     <Formik
@@ -42,7 +44,8 @@ const UploadForm: React.FC<fileInputProps> = ({}) => {
           body: formData,
         });
         actions.setSubmitting(false);
-        actions.setValues(initialValues);
+        mutate("/api/upload");
+        actions.resetForm();
       }}
     >
       {({ isSubmitting, setFieldValue }) => (
