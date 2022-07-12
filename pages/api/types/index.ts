@@ -1,12 +1,13 @@
 import { File } from "formidable";
-export type parsedFormDataT = {
+
+export interface parsedFormDataT {
   customName?: string;
   incomingFile: File;
   creator: string;
   description: string;
   mimetype: string;
   filename: string;
-};
+}
 
 export interface UploadT {
   creator: string;

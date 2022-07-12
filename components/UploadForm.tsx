@@ -36,7 +36,7 @@ const UploadForm: React.FC<fileInputProps> = ({}) => {
         for (key in values) {
           formData.append(key, values[key] as string | Blob);
         }
-        const response = await fetch("/api/upload", {
+        await fetch("/api/upload", {
           method: "POST",
           body: formData,
         });
@@ -47,7 +47,7 @@ const UploadForm: React.FC<fileInputProps> = ({}) => {
     >
       {({ isSubmitting, setFieldValue }) => (
         <Form>
-          <FormControl>
+          <FormControl mb={4}>
             <FormLabel htmlFor="creator">Your name: </FormLabel>
             <Field
               id="creator"
@@ -57,7 +57,8 @@ const UploadForm: React.FC<fileInputProps> = ({}) => {
               placeholder="Your name"
             />
           </FormControl>
-          <FormControl>
+
+          <FormControl mb={4}>
             <FormLabel htmlFor="description">File description: </FormLabel>
             <Field
               id="description"
@@ -67,7 +68,7 @@ const UploadForm: React.FC<fileInputProps> = ({}) => {
               placeholder="About the file..."
             />
           </FormControl>
-          <FormControl>
+          <FormControl mb={4}>
             <FormLabel htmlFor="description">Upload file: </FormLabel>
             <FileInput
               name="upload"
@@ -81,7 +82,7 @@ const UploadForm: React.FC<fileInputProps> = ({}) => {
               value={undefined}
             />
           </FormControl>
-          <FormControl>
+          <FormControl mb={3}>
             <FormLabel htmlFor="customName">
               Custom filename(optional):{" "}
             </FormLabel>

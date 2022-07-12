@@ -7,9 +7,8 @@ interface returnData {
   error: Error;
 }
 
-const useUser = (): returnData => {
+const useUploads = (): returnData => {
   const { data, error } = useSWR(`/api/upload`, fetcher);
-
   return {
     uploads: data,
     isLoading: !error && !data,
@@ -17,4 +16,4 @@ const useUser = (): returnData => {
   };
 };
 
-export default useUser;
+export default useUploads;

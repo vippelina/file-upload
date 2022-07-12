@@ -1,9 +1,8 @@
 import {
   Table,
-  TableCaption,
   TableContainer,
-  Text,
   Tbody,
+  Text,
   Th,
   Thead,
   Tr,
@@ -15,13 +14,12 @@ interface UploadListProps {}
 
 const UploadList: React.FC<UploadListProps> = ({}) => {
   const { uploads, isLoading } = useUploads();
-
+  if (isLoading) return <Text>Loading...</Text>;
   return (
     <>
       {uploads && uploads.length ? (
         <TableContainer>
           <Table variant="simple">
-            <TableCaption>File uploads</TableCaption>
             <Thead>
               <Tr>
                 <Th>File</Th>

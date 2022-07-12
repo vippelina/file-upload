@@ -15,13 +15,13 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h2 className={styles.title}>Upload a file</h2>
-        <br></br>
-
+        <br />
         <UploadForm />
-        <br></br>
-        <br></br>
+        <br />
+        <br />
+
         <h2 className={styles.title}>All uploads</h2>
-        <br></br>
+        <br />
         <UploadList />
       </main>
     </div>

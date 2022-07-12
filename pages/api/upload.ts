@@ -2,13 +2,8 @@
 import formidable, { File } from "formidable";
 import fs from "fs";
 import type { NextApiRequest, NextApiResponse } from "next";
-import getDbClient from "./services/database.service";
-import { parsedFormDataT, UploadT } from "./types";
 import { getAllUploads, saveAndGetUpload } from "./models/upload.model";
-import { json } from "stream/consumers";
-
-const dbName = process.env.DB_NAME;
-// todo fix to postresponsedata
+import { parsedFormDataT } from "./types";
 
 const parseForm = (req: NextApiRequest): Promise<parsedFormDataT> => {
   const form = new formidable.IncomingForm();
@@ -23,7 +18,6 @@ const parseForm = (req: NextApiRequest): Promise<parsedFormDataT> => {
 
       // bake return data
       const uploadedFile = files.upload as File;
-
       return resolve({
         incomingFile: uploadedFile,
         creator: fields.creator as string,
@@ -61,9 +55,8 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    const parsedForm = await parseForm(req);
-    const { incomingFile, customName } = parsedForm;
-    // flytta filen till rätt ställe
+    const { incomingFile, customName, creator, description, mimetype } =
+      await parseForm(req);
     const { newPath, newName } = await moveFileToPublicFolder(
       incomingFile,
       customName
@@ -71,12 +64,13 @@ export default async function handler(
 
     const upload = await saveAndGetUpload({
       path: newPath,
-      creator: parsedForm.creator,
-      description: parsedForm.description,
-      mimetype: parsedForm.mimetype,
+      creator: creator,
+      description: description,
+      mimetype: mimetype,
       filename: newName,
       created: new Date(),
     });
+
     res.status(200).json(upload);
   } else {
     if (req.method === "GET") {
@@ -89,6 +83,6 @@ export default async function handler(
 
 export const config = {
   api: {
-    bodyParser: false,
+    bodyParser: false, // for multipart/formdata to work
   },
 };

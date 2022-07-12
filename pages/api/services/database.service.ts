@@ -1,3 +1,4 @@
+// TAKEN FROM https://github.com/vercel/next.js/blob/canary/examples/with-mongodb/lib/mongodb.js
 import { MongoClient } from "mongodb";
 
 const uri = process.env.DB_CONN_STRING;
