@@ -5,6 +5,7 @@ export type parsedFormDataT = {
   creator: string;
   description: string;
   mimetype: string;
+  filename: string;
 };
 
 export interface UploadT {
@@ -12,4 +13,6 @@ export interface UploadT {
   description: string;
   mimetype: string;
   publicUrl: string;
+  created: Date;
+  filename: string;
 }

@@ -30,6 +30,7 @@ const parseForm = (req: NextApiRequest): Promise<parsedFormDataT> => {
         description: fields.description as string,
         mimetype: uploadedFile.mimetype as string,
         customName: fields.customName as string,
+        filename: uploadedFile.originalFilename as string,
       });
     });
   });
@@ -68,6 +69,8 @@ export default async function handler(
       creator: parsedForm.creator,
       description: parsedForm.description,
       mimetype: parsedForm.mimetype,
+      filename: parsedForm.filename,
+      created: new Date(),
     });
     res.status(200).json(upload);
   } else {
