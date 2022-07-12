@@ -9,7 +9,6 @@ import { json } from "stream/consumers";
 
 const dbName = process.env.DB_NAME;
 // todo fix to postresponsedata
-type Data = UploadT;
 
 const parseForm = (req: NextApiRequest): Promise<parsedFormDataT> => {
   const form = new formidable.IncomingForm();
@@ -34,28 +33,6 @@ const parseForm = (req: NextApiRequest): Promise<parsedFormDataT> => {
       });
     });
   });
-
-  // form.on("file", (name, incomingFile) => {
-  //   file.name = name;
-  //   file.file = incomingFile;
-  // });
-  // form.on("end", () => {
-  //   if (file) return resolve(file);
-  //   return reject(new Error("Incoming form data did not have a file"));
-  // });
-  // form.on("error", (err) => {
-  //   return reject(err);
-  // });
-  // kolla om det inte finns någon fil, i så fall returnera fel
-  // parsea filen sätt custom filename om finns
-  // return {
-  //   customName: "ny nytt namn", //undefined om
-  //   incomingFile: "filen som man får",
-  //   publicUrl: undefined,
-  //   creator: "Vibeke Tengroth",
-  //   description: "hej hej här är en bild",
-  //   mimetype: mimetypeT.pdf, // todo make enum
-  // };
 };
 
 const moveFileToPublicFolder = (
