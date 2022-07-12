@@ -2,7 +2,9 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import FileInput from "../components/FileInput";
+import UploadForm from "../components/UploadForm";
+import UploadList from "../components/UploadList";
+import UploadTrigger from "../components/UploadTrigger";
 
 const Home: NextPage = () => {
   return (
@@ -13,7 +15,9 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <FileInput />
+      <UploadForm />
+      <UploadList />
+      <UploadTrigger />
       <main className={styles.main}>
         <h1 className={styles.title}>Welcome to File upload!</h1>
       </main>

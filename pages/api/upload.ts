@@ -41,7 +41,9 @@ const moveFileToPublicFolder = (
 ): Promise<string> => {
   return new Promise((resolve) => {
     const oldPath = file.filepath;
-    const newPath = `./public/uploads/${customName || file.originalFilename}`;
+    const ext = file.originalFilename?.split(".").pop();
+    const name = customName ? `${customName}.${ext}` : file.originalFilename;
+    const newPath = `./public/uploads/${name}`;
 
     // using rename will automatically move file if path is different
     fs.rename(oldPath, newPath, function (err) {
@@ -55,9 +57,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === "GET") {
-    res.status(200);
-  }
   if (req.method === "POST") {
     const parsedForm = await parseForm(req);
     const { incomingFile, customName } = parsedForm;

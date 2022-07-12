@@ -1,5 +1,5 @@
-import { MongoClient, Collection } from "mongodb";
-import { parsedFormDataT } from "../types/types";
+import { MongoClient } from "mongodb";
+
 const uri = process.env.DB_CONN_STRING;
 const options = {};
 
