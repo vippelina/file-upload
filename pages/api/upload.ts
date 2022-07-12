@@ -41,7 +41,6 @@ const moveFileToPublicFolder = (
   customName?: string
 ): Promise<{ newPath: string; newName: string }> => {
   return new Promise((resolve) => {
-    console.log("vippe customname", customName);
     const oldPath = file.filepath;
     const ext = file.originalFilename?.split(".").pop();
     const newName = customName
