@@ -1,6 +1,6 @@
+import { WithId } from "mongodb";
 import getDbClient from "../services/database.service";
-import { parsedFormDataT, UploadT } from "../types";
-import { Document, WithId } from "mongodb";
+import { UploadT } from "../types";
 
 const dbName = process.env.DB_NAME;
 

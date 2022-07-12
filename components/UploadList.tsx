@@ -1,20 +1,17 @@
+import {
+  Table,
+  TableCaption,
+  TableContainer,
+  Tbody,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
 import React from "react";
 import useUploads from "../utils/useUploads";
 import ListItem from "./ListItem";
 interface UploadListProps {}
-import {
-  TableContainer,
-  Table,
-  TableCaption,
-  Tr,
-  Td,
-  Tbody,
-  Th,
-  Thead,
-  Tfoot,
-} from "@chakra-ui/react";
 
-import { ListItemProps } from "./ListItem";
 const UploadList: React.FC<UploadListProps> = ({}) => {
   const { uploads, isLoading } = useUploads();
   if (uploads && uploads.length) {

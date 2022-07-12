@@ -1,10 +1,8 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
 import UploadForm from "../components/UploadForm";
 import UploadList from "../components/UploadList";
-import UploadTrigger from "../components/UploadTrigger";
+import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
   return (
@@ -15,11 +13,16 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <UploadForm />
-      <UploadList />
-      <UploadTrigger />
       <main className={styles.main}>
-        <h1 className={styles.title}>Welcome to File upload!</h1>
+        <h2 className={styles.title}>Upload a file</h2>
+        <br></br>
+
+        <UploadForm />
+        <br></br>
+        <br></br>
+        <h2 className={styles.title}>All uploads</h2>
+        <br></br>
+        <UploadList />
       </main>
     </div>
   );

@@ -1,5 +1,5 @@
+import { Td, Tr } from "@chakra-ui/react";
 import React from "react";
-import { Tr, Td, Text } from "@chakra-ui/react";
 import MimetypeIcon from "./MimetypeIcon";
 
 export interface ListItemProps {

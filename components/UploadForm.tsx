@@ -7,8 +7,8 @@ import {
 } from "@chakra-ui/react";
 import { Field, Form, Formik } from "formik";
 import React from "react";
-import FileInput from "./FileInput";
 import { useSWRConfig } from "swr";
+import FileInput from "./FileInput";
 interface fileInputProps {}
 
 interface UploadFormValues {
@@ -36,9 +36,6 @@ const UploadForm: React.FC<fileInputProps> = ({}) => {
         for (key in values) {
           formData.append(key, values[key] as string | Blob);
         }
-
-        if (values.customName) formData.append("customName", values.customName);
-
         const response = await fetch("/api/upload", {
           method: "POST",
           body: formData,
