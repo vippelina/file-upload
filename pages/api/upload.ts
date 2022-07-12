@@ -39,17 +39,19 @@ const parseForm = (req: NextApiRequest): Promise<parsedFormDataT> => {
 const moveFileToPublicFolder = (
   file: File,
   customName?: string
-): Promise<string> => {
+): Promise<{ path: string; name: string }> => {
   return new Promise((resolve) => {
     const oldPath = file.filepath;
     const ext = file.originalFilename?.split(".").pop();
-    const name = customName ? `${customName}.${ext}` : file.originalFilename;
+    const name = customName
+      ? `${customName}.${ext}`
+      : file.originalFilename || `untitled.${ext}`;
     const newPath = `./public/uploads/${name}`;
 
     // using rename will automatically move file if path is different
     fs.rename(oldPath, newPath, function (err) {
       if (err) throw err;
-      resolve(newPath);
+      resolve({ path: newPath, name });
     });
   });
 };
@@ -62,10 +64,13 @@ export default async function handler(
     const parsedForm = await parseForm(req);
     const { incomingFile, customName } = parsedForm;
     // flytta filen till rätt ställe
-    const publicUrl = await moveFileToPublicFolder(incomingFile, customName);
+    const { path, name } = await moveFileToPublicFolder(
+      incomingFile,
+      customName
+    );
 
     const upload = await saveAndGetUpload({
-      publicUrl,
+      path,
       creator: parsedForm.creator,
       description: parsedForm.description,
       mimetype: parsedForm.mimetype,

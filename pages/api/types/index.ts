@@ -12,7 +12,7 @@ export interface UploadT {
   creator: string;
   description: string;
   mimetype: string;
-  publicUrl: string;
+  path: string;
   created: Date;
   filename: string;
 }
